@@ -1,8 +1,8 @@
 'use strict';
-const userNameInput=document.getElementById('user-name');
-const assessmentButton=document.getElementById('assessment');
-const resultDivision=document.getElementById('result-area');
-const tweetDivision=document.getElementById('tweet-area');
+const userNameInput = document.getElementById('user-name');
+const assessmentButton = document.getElementById('assessment');
+const resultDivision = document.getElementById('result-area');
+const tweetDivision = document.getElementById('tweet-area');
 
 assessmentButton.onclick = () => {
 
@@ -10,24 +10,37 @@ assessmentButton.onclick = () => {
   if (userName.length === 0) {
     return;
   }
-  
-   // 診断結果表示エリアの作成
-   resultDivision.innerText='';
-   const header = document.createElement('h3');
-   header.innerText = '診断結果';
-   resultDivision.appendChild(header);
- 
-   const paragraph = document.createElement('p');
-   const result = assessment(userName);
-   paragraph.innerText = result;
-   resultDivision.appendChild(paragraph);
 
-   tweetDivision.innerText='';
-   const anchor = document.createElement('a');
-  const hrefValue =    
-  'https://twitter.com/intent/tweet?button_hashtag=' +
-  encodeURIComponent('あなたのいいところ') +
-  '&ref_src=twsrc%5Etfw';
+  // 診断結果表示エリアの作成
+  resultDivision.innerText = '';
+  // headerDivision の作成
+  const headerDivision = document.createElement('div');
+  headerDivision.setAttribute('class', 'card-header');
+  headerDivision.innerText = '診断結果';
+
+  // bodyDivision の作成
+  const bodyDivision = document.createElement('div');
+  bodyDivision.setAttribute('class', 'card-body');
+
+  const paragraph = document.createElement('p');
+  paragraph.setAttribute('class', 'card-text');
+  const result = assessment(userName);
+  paragraph.innerText = result;
+  bodyDivision.appendChild(paragraph);
+
+  // resultDivision に Bootstrap のスタイルを適用する
+  resultDivision.setAttribute('class', 'card');
+
+  // headerDivision と bodyDivision を resultDivision に差し込む
+  resultDivision.appendChild(headerDivision);
+  resultDivision.appendChild(bodyDivision);
+
+  tweetDivision.innerText = '';
+  const anchor = document.createElement('a');
+  const hrefValue =
+    'https://twitter.com/intent/tweet?button_hashtag=' +
+    encodeURIComponent('あなたのいいところ') +
+    '&ref_src=twsrc%5Etfw';
   anchor.setAttribute('href', hrefValue);
   anchor.setAttribute('class', 'twitter-hashtag-button');
   anchor.setAttribute('data-text', result);
@@ -35,14 +48,14 @@ assessmentButton.onclick = () => {
 
   tweetDivision.appendChild(anchor);
 
-  
+
   const script = document.createElement('script');
   script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
   tweetDivision.appendChild(script);
 };
 
-userNameInput.onkeydown=event=>{
-  if (event.key==='Enter'){
+userNameInput.onkeydown = event => {
+  if (event.key === 'Enter') {
     //TODOボタンのonClick()処理を呼び出す
     assessmentButton.onclick()
   }
@@ -80,14 +93,14 @@ function assessment(userName) {
   let result = answers[index];
   result = result.replaceAll('###userName###', userName);
   return result;
-  
-  
+
+
 }
 
 // テストコード
 
 console.assert(
-  assessment('太郎')　=== 
+  assessment('太郎') ===
   '太郎のいいところは決断力です。太郎がする決断にいつも助けられる人がいます。',
   '診断結果の文言の特定の部分を名前に置き換える処理が正しくありません。'
 );
