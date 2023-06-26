@@ -82,6 +82,7 @@ const answers = [
 
 
 
+
 function assessment(userName) {
   // 全文字のコード番号を取得してそれを足し合わせる
   let sumOfCharCode = 0;
